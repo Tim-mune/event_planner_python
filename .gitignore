@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+venv/
+.vscode/
+.idea/
+pip-lock.txt
+pipfile.lock
+*.log
+*.pyc
+__pycache__/
+__init__.pyc
+.env
+db.sqlite3
+.python-version
+.DS_Store
+Thumbs.db
