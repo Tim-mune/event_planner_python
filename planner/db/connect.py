@@ -1,7 +1,5 @@
 from dotenv import load_dotenv, find_dotenv
-from beanie import init_beanie, init_beanie
-from motor.motor_asyncio import AsyncIOMotorClient
-from documents.User import Users
+from pymongo import MongoClient
 import os
 
 load_dotenv()
@@ -9,9 +7,11 @@ load_dotenv()
 
 async def connect():
     try:
-        client = AsyncIOMotorClient(os.environ.get("mongo_url"))
-        await init_beanie(database=client.db_name, document_models=[Users])
-        print("data base connected")
-        pass
+        client = MongoClient(os.environ.get("mongo_url"))
+        db = client.fastapi_test
+        # Users_collection = db["Users"]
+        # Events_collection = db["Events"]
+        print("dabase connected")
+        return db
     except Exception as err:
         print(err)
