@@ -9,8 +9,6 @@ async def connect():
     try:
         client = MongoClient(os.environ.get("mongo_url"))
         db = client.fastapi_test
-        # Users_collection = db["Users"]
-        # Events_collection = db["Events"]
         print("dabase connected")
         return db
     except Exception as err:

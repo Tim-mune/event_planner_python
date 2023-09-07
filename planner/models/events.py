@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List
+from bson import ObjectId
 
 
 class Events(BaseModel):
