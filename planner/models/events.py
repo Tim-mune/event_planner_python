@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 from typing import List
 from bson import ObjectId
+from beanie import Document
 
 
-class Events(BaseModel):
+class Events(Document):
     title: str
     image: str
     description: str
