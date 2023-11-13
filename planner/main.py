@@ -1,8 +1,16 @@
 from fastapi import FastAPI
 from routes.users import user_router
 from routes.events import events_router
+from db.connect import connect, addUser
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+async def start_db():
+    await connect()
+    await addUser()
+    print("success")
 
 
 @app.get("/")

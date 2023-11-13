@@ -1,28 +1,30 @@
-from fastapi import APIRouter, status, HTTPException
+from fastapi import APIRouter, status, HTTPException, Depends, Body
 from models.users import User, UserSignIn
+from db.connect import connect
 
 user_router = APIRouter(tags=["users"])
-users = {}
 
 
 @user_router.post("/signup")
-async def register_user(data: User) -> dict:
-    if data.email in users:
+async def register_user(data: User = Body(...), db=Depends(connect)) -> dict:
+    print(dict(data)["email"])
+    user_collection = db["Users"]
+    existing_user = user_collection.find_one({"email": dict(User)["email"]})
+    if existing_user:
         raise HTTPException(
-            detail="user already exists", status_code=status.HTTP_400_BAD_REQUEST
+            detail="invalid credentials", status_code=status.HTTP_201_CREATED
         )
-    users[data.email] = data
+    user_collection.insert_one(dict(data))
     return {"msg": "register successful"}
 
 
 @user_router.post("/signin")
 async def login_user(data: UserSignIn):
-    if data.email not in users:
-        raise HTTPException(
-            detail="email is not registred", status_code=status.HTTP_404_NOT_FOUND
-        )
-    elif users[data.email].password != data.password:
-        raise HTTPException(
-            detail="invalid credentials", status_code=status.HTTP_400_BAD_REQUEST
-        )
     return {"msg": "user signin success"}
+
+
+@user_router.get("/users")
+async def register_user(db=Depends(connect)) -> dict:
+    user_collection = db["Users"]
+    print(list(user_collection.find({})))
+    return {"users": len(list(user_collection.find({})))}
