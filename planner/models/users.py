@@ -10,6 +10,7 @@ class User(Document):
     email: EmailStr
     password: str
     events: Optional[List[Events]]
+    is_verified: bool = False
 
 
 class UserSignIn(BaseModel):
